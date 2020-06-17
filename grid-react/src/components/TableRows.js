@@ -8,7 +8,7 @@ class TableRows extends Component{
     fillwithCols = () => {
         let allcols = [];
         for(let i = 0; i<this.props.cols; i++){
-            allcols.push(<TableCells rows={this.props.cols} />)
+            allcols.push(<TableCells rows={this.props.cols} />)//when a tr is generated makes call to create the td for the cols/cells
         }
         return allcols;
     }

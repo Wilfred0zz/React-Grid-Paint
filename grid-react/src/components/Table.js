@@ -8,7 +8,7 @@ class Table extends Component{
     Rows = () => {
         let allrows =[];
         for(let i = 0; i<this.props.rows; i++){
-            allrows.push(<TableRows cols = {this.props.cols} />);
+            allrows.push(<TableRows cols = {this.props.cols} />);//for the amount of rows apparent it will call the table rows that will make a new tr
         }
         return allrows;
     }

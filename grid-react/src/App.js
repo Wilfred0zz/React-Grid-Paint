@@ -7,14 +7,29 @@ class App extends Component{
     super();
     this.state={
       rows: 0,
-      cols: 1
+      cols: 0,
     }
   }
-  addRow = () =>{
-    this.setState({rows: this.state.rows+1})
+
+  addRow = () =>{ //adds to track of rows apparent to number of clicks.
+    let {rows, cols} = this.state;
+    let fixRows = rows + 1;//fixed if cols has one to create a td if rows has none
+    if (cols === 0) {
+      this.setState({ rows: fixRows, cols: cols + 1});
+    } else {
+      this.setState({rows: fixRows});//if already is col will create same amount of cols for each.
+    }
   }
-  addCol = () => {
-    this.setState({cols: this.state.cols+1})
+
+
+  addCol = () => {//adds to track of cols apprent to number of clicks
+    let {rows, cols} = this.state;
+    let fixCols = cols + 1;
+    if (rows === 0) {
+      this.setState({cols:fixCols, rows:rows + 1});//fixed if the user clicks cols first and there is no tr which is needed first to generate cell.
+    } else {
+      this.setState({cols:fixCols});//if there already is a fixed amount of rows it will create a col for each row
+    }
   }
   removeRow = () =>{
     this.setState({rows: this.state.rows-1})
