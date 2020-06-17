@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Table,TableRows,TableCells} from './components'
+import {Table} from './components'
 
 class App extends Component{
   constructor(){
@@ -48,6 +48,7 @@ class App extends Component{
           <option value="Blue">Blue</option>
           <option value="Yellow">Yellow</option>
         </select>
+        <Table rows={this.state.rows} cols={this.state.cols}></Table>
       </div>
     )
   }

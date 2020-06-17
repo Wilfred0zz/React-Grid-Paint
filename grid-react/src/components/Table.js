@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import TableRows from './TableRows';
 
 class Table extends Component{
     constructor(props){
@@ -7,8 +8,17 @@ class Table extends Component{
     Rows = () => {
         let allrows =[];
         for(let i = 0; i<this.props.rows; i++){
-            allrows.push()
+            allrows.push(<TableRows cols = {this.props.cols} />);
         }
+        return allrows;
+    }
+    render(){
+        return(
+        <table>
+            <tbody>
+            {this.Rows()}
+            </tbody>
+        </table>)
     }
 }
 
