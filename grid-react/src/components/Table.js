@@ -1,25 +1,38 @@
-import React, { Component } from 'react';
-import TableRows from './TableRows';
+import React from "react";
 
-class Table extends Component{
-    constructor(props){
-        super(props);
-    }
-    Rows = () => {
-        let allrows =[];
-        for(let i = 0; i<this.props.rows; i++){
-            allrows.push(<TableRows cols = {this.props.cols} />);//for the amount of rows apparent it will call the table rows that will make a new tr
-        }
-        return allrows;
-    }
-    render(){
-        return(
+//Props for table
+const Table = ({
+    rows,
+    cols,
+    setColor,
+    startColoring,
+    stopColoring
+}) => 
+{
+    //Generates table adding rows/cols accordingly. 
+    //Each cell is created with color set to white and eventlisteners
+    return (
         <table>
             <tbody>
-            {this.Rows()}
+            {Array.from(Array(rows), () => {
+                return (
+                    <tr>
+                        {Array.from(Array(cols), () => {
+                            return (
+                                <td 
+                                style={{backgroundColor: 'white'}}
+                                onMouseOver={(cell) => setColor(cell)}
+                                onMouseDown={(cell) => startColoring(cell)}
+                                onMouseUp={(cell) => stopColoring(cell)}
+                                ></td>
+                            )
+                        })}
+                    </tr>
+                )
+            })}
             </tbody>
-        </table>)
-    }
+        </table>
+    );
 }
 
 export default Table;
