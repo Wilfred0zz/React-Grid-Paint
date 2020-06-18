@@ -125,7 +125,7 @@ class App extends Component{
         <button className="fillAll" onClick={this.fillAll}>Fill All</button>
         <button className="clear" onClick={this.clear}>Clear</button>
         <select onChange={this.selectColor}>
-          <option>Select</option>
+          <option value="White">White</option>
           <option value="Red">Red</option>
           <option value="Green">Green</option>
           <option value="Blue">Blue</option>
