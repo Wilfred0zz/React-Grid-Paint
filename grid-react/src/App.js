@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import './App.css';
-import {Table} from './components'
+import Table from './components/Table'
 
 class App extends Component{
   constructor(){
@@ -8,6 +9,8 @@ class App extends Component{
     this.state={
       rows: 0,
       cols: 0,
+      color: 'white',
+      mouseDown: false
     }
   }
 
@@ -31,39 +34,110 @@ class App extends Component{
       this.setState({cols:fixCols});//if there already is a fixed amount of rows it will create a col for each row
     }
   }
-  removeRow = () =>{
-    this.setState({rows: this.state.rows-1})
+
+  //Removes rows
+  removeRow = () => {
+    //If there are no rows, alert user
+    if (this.state.rows === 0)
+      alert("No rows to remove")
+    //If this is the last row to remove, reset to empty table
+    else if (this.state.rows === 1)
+      this.setState({ rows: 0, cols: 0 })
+    else
+      this.setState({ rows: this.state.rows - 1 })
   }
+
   removeCol = () => {
-    this.setState({cols: this.state.cols-1})
+    //If there are no columns, alert user
+    if (this.state.cols === 0)
+      alert("No columns to remove")
+    //If this is the last column to remove, reset to empty table
+    else if (this.state.cols === 1)
+      this.setState({ rows: 0, cols: 0 })
+    else
+      this.setState({ cols: this.state.cols - 1 })
   }
+
+  //Uses ReactDOM to select the table, then tablebody, and the tr's contained within it.
+  //Then iterates through each row and its cells, checking if their color is white
+  //If it is white, we replace it with the currently selected color.
   fillAU = () => {
-
+    let table = ReactDOM.findDOMNode(this).childNodes[8].childNodes[0].childNodes;
+    for(let i = 0; i < this.state.rows; i++){
+      for(let j = 0; j < this.state.cols; j++){
+        if(table[i].childNodes[j].style.backgroundColor === "white")
+        table[i].childNodes[j].style.backgroundColor = this.state.color;
+      }
+    }
   }
+
+  //Sets color of all cells to the selected color
   fillAll = () =>{
-
+    let table = ReactDOM.findDOMNode(this).childNodes[8].childNodes[0].childNodes;
+    for(let i = 0; i < this.state.rows; i++){
+      for(let j = 0; j < this.state.cols; j++)
+        table[i].childNodes[j].style.backgroundColor = this.state.color;
+    }
   }
 
-  clear = () =>{}
+  //Sets color of all cells to white
+  clear = () =>{
+    let table = ReactDOM.findDOMNode(this).childNodes[8].childNodes[0].childNodes;
+    for(let i = 0; i < this.state.rows; i++){
+      for(let j = 0; j < this.state.cols; j++)
+        table[i].childNodes[j].style.backgroundColor = "white";
+    }
+  }
 
+  //Sets the color to the passed event target's value.
+  selectColor = (selection) => {
+    this.setState({ color: selection.target.value })
+  }
+
+  //When the mouse is clicked and held, colors the clicked cell
+  startColoring = (cell) => {
+    this.setState({ mouseDown: true })
+    cell.target.style.backgroundColor = this.state.color;
+  }
+
+  //Stops coloring hovered cells once mouse is no longer held down
+  stopColoring = (cell) => {
+    this.setState({ mouseDown: false })
+  }
+
+  //If the mouse is held down, color any hovered cells.
+  setColor = (cell) => {
+    if (this.state.mouseDown === true)
+        cell.target.style.backgroundColor = this.state.color;
+  }
+
+
+  //Generate the buttons and dropdown menu
+  //Pass states and functions from App component to Table
   render(){
     return(
       <div className="App">
         <button className="addRow" onClick={this.addRow}>Add Row</button>
         <button className="addCol" onClick={this.addCol}>Add Col</button>
         <button className="removeRow" onClick={this.removeRow}>Remove Row</button>
-        <button className="removeCol" onClick={this.addcol}>Remove Col</button>
-        <button className="fillAllUncolered" onClick="">Fill All Uncolored</button>
-        <button className="fillAll" onClick="">Fill All</button>
-        <button className="clear" onClick="">Clear</button>
-        <select onChange="">
+        <button className="removeCol" onClick={this.removeCol}>Remove Col</button>
+        <button className="fillAllUncolered" onClick={this.fillAU}>Fill All Uncolored</button>
+        <button className="fillAll" onClick={this.fillAll}>Fill All</button>
+        <button className="clear" onClick={this.clear}>Clear</button>
+        <select onChange={this.selectColor}>
           <option>Select</option>
           <option value="Red">Red</option>
           <option value="Green">Green</option>
           <option value="Blue">Blue</option>
           <option value="Yellow">Yellow</option>
         </select>
-        <Table rows={this.state.rows} cols={this.state.cols}></Table>
+        <Table rows={this.state.rows} 
+            cols={this.state.cols}
+            color={this.state.color}
+            startColoring={this.startColoring}
+            stopColoring={this.stopColoring}
+            setColor={this.setColor}
+            />
       </div>
     )
   }
